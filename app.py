@@ -4,6 +4,8 @@ from datetime import date
 
 from flask import Flask, redirect, render_template, request, url_for
 
+from izin import kidem_hesapla, yillik_izin_hakki
+
 
 def calisan_dogrula(veri, bugun=None):
     """Form verisini kontrol eder ve hata mesajlarının listesini döndürür.
@@ -91,8 +93,19 @@ def create_app(veritabani_yolu=None):
                 return redirect(url_for("index"))
 
         baglanti = baglanti_al()
-        calisanlar = baglanti.execute("SELECT * FROM calisanlar ORDER BY id").fetchall()
+        satirlar = baglanti.execute("SELECT * FROM calisanlar ORDER BY id").fetchall()
         baglanti.close()
+
+        # Her çalışan için kıdem ve yıllık izin hakkını hesapla.
+        bugun = date.today()
+        calisanlar = []
+        for satir in satirlar:
+            calisan = dict(satir)
+            dogum = date.fromisoformat(calisan["dogum_tarihi"])
+            ise_baslama = date.fromisoformat(calisan["ise_baslama_tarihi"])
+            calisan["kidem"] = kidem_hesapla(ise_baslama, bugun)
+            calisan["yillik_izin"] = yillik_izin_hakki(dogum, ise_baslama, bugun)
+            calisanlar.append(calisan)
 
         durum_kodu = 400 if hatalar else 200
         return render_template("index.html", calisanlar=calisanlar, hatalar=hatalar, form=form), durum_kodu

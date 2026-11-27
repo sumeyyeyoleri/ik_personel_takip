@@ -55,6 +55,8 @@
                 <th>Departman</th>
                 <th>Doğum tarihi</th>
                 <th>İşe başlama tarihi</th>
+                <th>Kıdem (yıl)</th>
+                <th>Yıllık izin (gün)</th>
             </tr>
         </thead>
         <tbody>
@@ -64,6 +66,8 @@
                 <td>{{ calisan.departman }}</td>
                 <td>{{ calisan.dogum_tarihi }}</td>
                 <td>{{ calisan.ise_baslama_tarihi }}</td>
+                <td class="kidem">{{ calisan.kidem }}</td>
+                <td class="izin">{{ calisan.yillik_izin }}</td>
             </tr>
             {% endfor %}
         </tbody>

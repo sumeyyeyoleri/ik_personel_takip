@@ -1,0 +1,24 @@
+name: Testler
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Kodu indir
+        uses: actions/checkout@v4
+
+      - name: Python 3.14 kur
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.14"
+
+      - name: Paketleri yükle
+        run: pip install -r requirements.txt
+
+      - name: Testleri çalıştır
+        run: pytest -v
