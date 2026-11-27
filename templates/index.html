@@ -1,0 +1,75 @@
+<!doctype html>
+<html lang="tr">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>İK Personel Takip</title>
+    <style>
+        body { font-family: sans-serif; max-width: 800px; margin: 20px auto; padding: 0 16px; color: #222; }
+        form { display: grid; gap: 10px; max-width: 400px; margin-bottom: 30px; }
+        label { display: flex; flex-direction: column; gap: 4px; }
+        input { padding: 6px; font-size: 1rem; }
+        button { padding: 8px; font-size: 1rem; cursor: pointer; }
+        .hatalar { background: #fde8e8; color: #9b1c1c; border: 1px solid #f5b5b5; padding: 10px 10px 10px 30px; }
+        table { width: 100%; border-collapse: collapse; }
+        th, td { border: 1px solid #ccc; padding: 6px 8px; text-align: left; }
+        th { background: #f0f0f0; }
+    </style>
+</head>
+<body>
+    <h1>İK Personel Takip</h1>
+
+    <h2>Çalışan ekle</h2>
+
+    {% if hatalar %}
+    <ul class="hatalar">
+        {% for hata in hatalar %}
+        <li>{{ hata }}</li>
+        {% endfor %}
+    </ul>
+    {% endif %}
+
+    <form method="post">
+        <label>Ad soyad
+            <input type="text" name="ad_soyad" value="{{ form.ad_soyad or '' }}">
+        </label>
+        <label>Departman
+            <input type="text" name="departman" value="{{ form.departman or '' }}">
+        </label>
+        <label>Doğum tarihi
+            <input type="date" name="dogum_tarihi" value="{{ form.dogum_tarihi or '' }}">
+        </label>
+        <label>İşe başlama tarihi
+            <input type="date" name="ise_baslama_tarihi" value="{{ form.ise_baslama_tarihi or '' }}">
+        </label>
+        <button type="submit">Kaydet</button>
+    </form>
+
+    <h2>Çalışanlar</h2>
+
+    {% if calisanlar %}
+    <table>
+        <thead>
+            <tr>
+                <th>Ad soyad</th>
+                <th>Departman</th>
+                <th>Doğum tarihi</th>
+                <th>İşe başlama tarihi</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for calisan in calisanlar %}
+            <tr>
+                <td>{{ calisan.ad_soyad }}</td>
+                <td>{{ calisan.departman }}</td>
+                <td>{{ calisan.dogum_tarihi }}</td>
+                <td>{{ calisan.ise_baslama_tarihi }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    {% else %}
+    <p>Henüz kayıtlı çalışan yok.</p>
+    {% endif %}
+</body>
+</html>
